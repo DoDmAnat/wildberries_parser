@@ -1,14 +1,15 @@
 from datetime import datetime
+from product_parser import wb_parser
 from typing import List
 
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.sql import insert
+from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-from database import SessionLocal, engine
-from parser import wb_parser
+from sqlalchemy.sql import insert
+
+import crud
 import models
 import schemas
-import crud
+from database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 

@@ -1,6 +1,10 @@
-from sqlalchemy.orm import Session
-from parser import wb_parser
 from datetime import datetime
+from typing import Dict
+
+from product_parser import wb_parser
+
+from sqlalchemy.orm import Session
+
 import models
 import schemas
 

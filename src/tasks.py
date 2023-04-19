@@ -1,8 +1,9 @@
 from celery import Celery
 from celery.schedules import crontab
-from database import SessionLocal
-from config import REDIS_HOST, REDIS_PORT
+
 import crud
+from config import REDIS_HOST, REDIS_PORT
+from database import SessionLocal
 
 celery = Celery('tasks', broker=f'redis://{REDIS_HOST}:{REDIS_PORT}')
 
