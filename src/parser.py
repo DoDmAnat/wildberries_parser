@@ -8,5 +8,20 @@ def wb_parser(nm_id: int):
     response = requests.get(url_card, headers=headers)
     data = response.json()['data']['products']
     if data:
-        return data[0]
+        data = data[0]
+        card = {
+            "nm_id": nm_id,
+            "name": data['name'],
+            "brand": data['brand'],
+            "brand_id": data['brandId'],
+            "site_brand_id": data['siteBrandId'],
+            "supplier_id": data['supplierId'],
+            "sale": data['sale'],
+            "price": data['priceU'],
+            "sale_price": data['salePriceU'],
+            "rating": data['rating'],
+            "feedbacks": data['feedbacks'],
+            "colors": data['colors'][0]['name'] if data['colors'] else None
+        }
+        return card
     return None

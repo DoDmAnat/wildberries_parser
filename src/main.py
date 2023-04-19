@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException
@@ -31,26 +32,9 @@ def create_product(nm_id: int, db: Session = Depends(get_db)):
     if product:
         print(db.query(models.Product.nm_id))
         return 'Товар уже существует в базе данных'
-    data = wb_parser(nm_id)
-    if data:
-        conn = engine.connect()
-        ins = insert(models.Product).values(
-            nm_id=nm_id,
-            name=data['name'],
-            brand=data['brand'],
-            brand_id=data['brandId'],
-            site_brand_id=data['siteBrandId'],
-            supplier_id=data['supplierId'],
-            sale=data['sale'],
-            price=data['priceU'],
-            sale_price=data['salePriceU'],
-            rating=data['rating'],
-            feedbacks=data['feedbacks'],
-            colors=data['colors'][0]['name'] if data['colors'] else None
-        )
-
-        conn.execute(ins)
-        return f"Товар '{data['name']}' добавлен в базу данных"
+    product_data = wb_parser(nm_id)
+    if product_data:
+        return crud.create_product(db=db, product_data=product_data)
     return 'Нет такого товара'
 
 
@@ -78,3 +62,9 @@ def delete_product(nm_id: int, db: Session = Depends(get_db)):
     db.delete(product)
     db.commit()
     return f"Товар '{nm_id}' удален"
+
+
+# @app.patch("/products/update/{nm_id}/")
+# def update_product(nm_id: int, db: Session = Depends(get_db)):
+#     crud.update_product(db=db, nm_id=nm_id)
+#     return {'status': 'OK'}
